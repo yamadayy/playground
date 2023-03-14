@@ -8,7 +8,7 @@ def root_n_law(n_repeat: int, sequence: list):
         a = np.empty(0)
         for j in range(n_repeat):
             a = np.append(a, np.random.randn(i).mean())
-        print(str(a.mean()) + ", " + str(a.std()))
+        print(str(a.mean()) + ",  " + str(a.std()))
 
 
 if __name__ == '__main__':
