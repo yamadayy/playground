@@ -1,5 +1,7 @@
 import random
 
+import numpy as np
+
 from star import Star
 from scale import Scale
 
@@ -16,5 +18,17 @@ if __name__ == '__main__':
     stars = []
     for i in range(num_star):
         x = random.random() * line_scale
-        print(x)
+        # print(x)
         stars.append(Star(x))
+    ref_stars = []
+    for i in range(num_reference_star):
+        x = random.random() * line_scale
+        y = random.normalvariate(mu=0, sigma=reference_accuracy)
+        # print(y)
+        ref_stars.append(Star(x, data_error=y))
+
+    sample = np.empty(0)
+    for i in range(10000):
+        sample = np.append(sample, random.normalvariate(mu=-1, sigma=0.3))
+    print(sample.mean())
+    print(sample.std())
