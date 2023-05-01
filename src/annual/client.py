@@ -60,6 +60,24 @@ def make_stars(n: int, scale: float):
     return targets
 
 
+def estimate_parallax(param: list, scales, s: Star):
+    a = []
+    for i in range(len(param)):
+        a.append([1, param[i][2], math.sin(2 * math.pi * param[i][2])])
+    mat_a = np.array(a)
+    b = [[0],[0],[0]]
+    for i in range(len(param)):
+        observed_value = scales[i].observe(s.position())
+        estimated_position = param[i][0] * observed_value + param[i][1]
+        b[0][0] = b[0][0] + estimated_position
+        b[1][0] = b[1][0] + estimated_position * param[i][2]
+        b[2][0] = b[2][0] + estimated_position \
+                  * math.sin(2 * math.pi * param[i][2])
+    mat_b = np.array(b)
+    astrometric_param = np.linalg.inv(mat_a.transpose().dot(mat_a)).dot(mat_b)
+    return astrometric_param[2][0]
+
+
 if __name__ == '__main__':
     num_star = 10
     num_reference_star = 10
@@ -72,7 +90,7 @@ if __name__ == '__main__':
     observation_accuracy = 1
     reference_accuracy = 0.1
     target_accuracy = 0.03
-    if True:
+    if False:
         observation_accuracy = 0
         reference_accuracy = 0
         amplitude_every_observation = 0
@@ -82,6 +100,10 @@ if __name__ == '__main__':
     scales0 = make_scales(num_season, num_exposure_per_season, sigma_origin,
                           amplitude_annual_scale / line_scale,
                           amplitude_every_observation / line_scale)
-    print([scales0[0]._Scale__scale, scales0[0]._Scale__origin])
-    ans = estimate_scale_parameters(scales0[0], ref_stars)
-    print(ans)
+    # print([scales0[0]._Scale__scale, scales0[0]._Scale__origin])
+    estimated_plate_param = []
+    for k in range(len(scales0)):
+        ans = estimate_scale_parameters(scales0[k], ref_stars)
+        estimated_plate_param.append([ans[0], ans[1], scales0[k].get_time()])
+    for i in range(len(stars)):
+        print(estimate_parallax(estimated_plate_param, scales0, stars[i]))

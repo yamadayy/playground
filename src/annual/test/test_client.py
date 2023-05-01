@@ -1,6 +1,9 @@
 import math
 import random
-from annual.client import make_stars, make_scales, make_reference_stars
+from annual.client import make_stars, make_scales, make_reference_stars,\
+    estimate_parallax
+from annual.scale import Scale
+from annual.star import Star
 
 
 def test_stars(monkeypatch):
@@ -28,3 +31,17 @@ def test_make_scale(monkeypatch):
     assert math.isclose(scales[1].get_time(), 0.125, rel_tol=1e-7)
     assert math.isclose(scales[0].observe(5), 4.4833656, rel_tol=1e-7)
     assert math.isclose(scales[1].observe(5), 4.4260934, rel_tol=1e-7)
+
+
+def test_estimate_parallax():
+    estimated_scales = []
+    for i in range(11):
+        t = -0.5 + i * 0.1
+        estimated_scales.append([1.0, 0.0, t])
+    scales = []
+    for i in range(len(estimated_scales)):
+        scales.append(Scale(estimated_scales[i][1], estimated_scales[i][0],
+                            estimated_scales[i][2]))
+    star = Star(1.0)
+    assert math.isclose(estimate_parallax(estimated_scales, scales, star), 0.0,
+                        abs_tol=1e-7)
