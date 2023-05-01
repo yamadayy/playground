@@ -79,7 +79,7 @@ def estimate_parallax(param: list, scales, s: Star):
 
 
 if __name__ == '__main__':
-    num_star = 10
+    num_star = 50
     num_reference_star = 10
     line_scale = 100
     amplitude_annual_scale = 0.25
@@ -94,16 +94,26 @@ if __name__ == '__main__':
         observation_accuracy = 0
         reference_accuracy = 0
         amplitude_every_observation = 0
-    stars = make_stars(num_star, line_scale)
-    ref_stars = make_reference_stars(num_reference_star, line_scale,
-                                     reference_accuracy)
-    scales0 = make_scales(num_season, num_exposure_per_season, sigma_origin,
-                          amplitude_annual_scale / line_scale,
-                          amplitude_every_observation / line_scale)
-    # print([scales0[0]._Scale__scale, scales0[0]._Scale__origin])
-    estimated_plate_param = []
-    for k in range(len(scales0)):
-        ans = estimate_scale_parameters(scales0[k], ref_stars)
-        estimated_plate_param.append([ans[0], ans[1], scales0[k].get_time()])
-    for i in range(len(stars)):
-        print(estimate_parallax(estimated_plate_param, scales0, stars[i]))
+    mean = []
+    stdev = []
+    for rep in range(100):
+        parallax = []
+        stars = make_stars(num_star, line_scale)
+        ref_stars = make_reference_stars(num_reference_star, line_scale,
+                                         reference_accuracy)
+        scales0 = make_scales(num_season, num_exposure_per_season, sigma_origin,
+                              amplitude_annual_scale / line_scale,
+                              amplitude_every_observation / line_scale)
+        estimated_plate_param = []
+        for k in range(len(scales0)):
+            ans = estimate_scale_parameters(scales0[k], ref_stars)
+            estimated_plate_param.append([ans[0], ans[1], scales0[k].get_time()])
+        for i in range(len(stars)):
+            parallax.append(estimate_parallax(estimated_plate_param, scales0,
+                                              stars[i]))
+        p = np.array(parallax)
+        mean.append(p.mean())
+        stdev.append(p.std())
+    m = np.array(mean)
+    s = np.array(stdev)
+    print(str(m.mean()) + "," + str(s.mean()))
