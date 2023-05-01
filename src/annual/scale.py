@@ -1,7 +1,8 @@
 class Scale:
-    def __init__(self, o: float, s: float):
+    def __init__(self, o: float, s: float, t: float):
         self.__origin = o
         self.__scale = s
+        self.__time = t
 
     def observe(self, pos: float) -> float:
         """
@@ -18,3 +19,6 @@ class Scale:
         :return: true coordinate
         """
         return observed * self.__scale + self.__origin
+
+    def get_time(self):
+        return self.__time

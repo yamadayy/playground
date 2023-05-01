@@ -3,8 +3,8 @@ import random
 
 import numpy as np
 
-from star import Star
-from scale import Scale
+from annual.star import Star
+from annual.scale import Scale
 
 
 def estimate_scale_parameters(scale0: Scale, ref: list):
@@ -28,35 +28,34 @@ def estimate_scale_parameters(scale0: Scale, ref: list):
     return [ans[0][0], ans[1][0]]
 
 
-def make_scales():
+def make_scales(n_season: int, n_exposure: int, dev_origin: float,
+                dev_scale: float, dev_exposure: float):
     scales = []
-    for i in range(num_season):
-        t = i * 0.5 - (num_season - 1) * 0.25
-        for j in range(num_exposure_per_season):
-            dt = -0.125 + j * 0.25 / (num_exposure_per_season - 1.0)
+    for i in range(n_season):
+        t = i * 0.5 - (n_season - 1) * 0.25
+        for j in range(n_exposure):
+            dt = -0.125 + j * 0.25 / (n_exposure - 1.0)
             tt = t + dt
-            origin = random.normalvariate(mu=0, sigma=2)
-            scale = 1 + amplitude_annual_scale * math.sin(2 * math.pi * tt) \
-                    / line_scale
-            scales.append(Scale(origin, scale))
+            origin = random.normalvariate(mu=0, sigma=dev_origin)
+            scale = 1 + dev_scale * math.sin(2 * math.pi * tt)\
+                    + random.normalvariate(mu=0, sigma=dev_exposure)
+            scales.append(Scale(origin, scale, tt))
     return scales
 
 
-def make_reference_stars():
+def make_reference_stars(num_ref_stars: int, scale: float, ref_accuracy: float):
     refs = []
-    for i in range(num_reference_star):
-        x = random.random() * line_scale
-        y = random.normalvariate(mu=0, sigma=reference_accuracy)
-        # print(y)
+    for i in range(num_ref_stars):
+        x = random.random() * scale
+        y = random.normalvariate(mu=0, sigma=ref_accuracy)
         refs.append(Star(x, data_error=y))
     return refs
 
 
-def make_stars():
+def make_stars(n: int, scale: float):
     targets = []
-    for i in range(num_star):
-        x = random.random() * line_scale
-        # print(x)
+    for i in range(n):
+        x = random.random() * scale
         targets.append(Star(x))
     return targets
 
@@ -67,6 +66,7 @@ if __name__ == '__main__':
     line_scale = 100
     amplitude_annual_scale = 0.25
     amplitude_every_observation = 0.01
+    sigma_origin = 2
     num_exposure_per_season = 50
     num_season = 6
     observation_accuracy = 1
@@ -75,9 +75,13 @@ if __name__ == '__main__':
     if True:
         observation_accuracy = 0
         reference_accuracy = 0
-    stars = make_stars()
-    ref_stars = make_reference_stars()
-    scales = make_scales()
-    print([scales[0]._Scale__scale, scales[0]._Scale__origin])
-    ans = estimate_scale_parameters(scales[0], ref_stars)
+        amplitude_every_observation = 0
+    stars = make_stars(num_star, line_scale)
+    ref_stars = make_reference_stars(num_reference_star, line_scale,
+                                     reference_accuracy)
+    scales0 = make_scales(num_season, num_exposure_per_season, sigma_origin,
+                          amplitude_annual_scale / line_scale,
+                          amplitude_every_observation / line_scale)
+    print([scales0[0]._Scale__scale, scales0[0]._Scale__origin])
+    ans = estimate_scale_parameters(scales0[0], ref_stars)
     print(ans)
