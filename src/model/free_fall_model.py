@@ -1,3 +1,5 @@
+import numpy
+
 from model.abstract_model import AbstractModel
 
 
@@ -10,4 +12,4 @@ class FreeFallModel(AbstractModel):
         return a[0] * b[0] * b[0] + a[1] * b[0] + a[2]
 
     def b_matrix(self, a: list, o: list):
-        pass
+        tmp = numpy.array((3, len(o)))
