@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from model.no_constraint import NoConstraint
+import numpy as np
 
 
 class AbstractModel(ABC):
@@ -8,7 +9,7 @@ class AbstractModel(ABC):
         self.__constraint = NoConstraint()
 
     @abstractmethod
-    def model(self, a: list, b: list):
+    def model(self, a: np.ndarray, b: np.ndarray) -> np.ndarray:
         pass
 
     @abstractmethod

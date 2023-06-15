@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from model.abstract_model import AbstractModel
+import numpy as np
 
 
 class AbstractSolver(ABC):
@@ -8,9 +9,9 @@ class AbstractSolver(ABC):
         self.n = self.model.num_param()
 
     @abstractmethod
-    def correlation(self, a: list, da: list, o: list):
+    def correlation(self, a: np.ndarray, da: np.ndarray, o: np.ndarray):
         pass
 
     @abstractmethod
-    def covariant(self, a: list, da: list, o: list):
+    def covariant(self, a: np.ndarray, da: np.ndarray, o: np.ndarray):
         pass

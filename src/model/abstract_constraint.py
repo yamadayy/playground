@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
+import numpy as np
 
 
 class AbstractConstraint(ABC):
     @abstractmethod
-    def constraint(self, a: list):
+    def constraint(self, a: np.ndarray) -> np.ndarray:
         pass
 
     @abstractmethod
@@ -11,5 +12,5 @@ class AbstractConstraint(ABC):
         pass
 
     @abstractmethod
-    def c_matrix(self, a: list):
+    def c_matrix(self, a: np.ndarray) -> np.ndarray:
         pass
