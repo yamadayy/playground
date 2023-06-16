@@ -3,14 +3,34 @@ import numpy as np
 
 
 class AbstractConstraint(ABC):
+    """
+    This is the abstraction of constraint.
+    See "Least Square Adjustment with relatively large observation errors,
+    inaccurate initial approximations, or both" by Heinrich Eichhorn and Warren
+    G. Clay, Mon. Not. R. astr. Soc. (1974) 166, 425-432.
+    """
     @abstractmethod
-    def constraint(self, a: np.ndarray) -> np.ndarray:
+    def constraint(self, a0: np.ndarray) -> np.ndarray:
+        """
+        
+        :param a0: trial values of parameters which we would like to estimate
+        :return: the values of constraint(s), H_0
+        """
         pass
 
     @abstractmethod
     def dimension(self) -> int:
+        """
+
+        :return: number of constraints.
+        """
         pass
 
     @abstractmethod
-    def c_matrix(self, a: np.ndarray) -> np.ndarray:
+    def c_matrix(self, a0: np.ndarray) -> np.ndarray:
+        """
+        
+        :param a0: trial values of parameters which we would like to estimate
+        :return: Matrix C.
+        """
         pass
