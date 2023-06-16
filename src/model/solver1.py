@@ -1,7 +1,7 @@
 import numpy as np
+
 from model.abstract_model import AbstractModel
 from model.abstract_solver import AbstractSolver
-from model.observation import Observation
 
 
 class Solver1(AbstractSolver):

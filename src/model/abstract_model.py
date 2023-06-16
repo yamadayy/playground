@@ -65,7 +65,7 @@ class AbstractModel(ABC):
         :param a0: trial value of parameters which we would like to estimate.
         :return: constraint matrix C
         """
-        return self.__constraint.c_matrix(a)
+        return self.__constraint.c_matrix(a0)
 
     def constraint(self, a0: np.ndarray) -> np.ndarray:
         """
@@ -74,4 +74,4 @@ class AbstractModel(ABC):
         :param a0: trial value of parameters which we would like to estimate.
         :return: value(s) of constraints.  H_0
         """
-        return self.__constraint.constraint(a)
+        return self.__constraint.constraint(a0)

@@ -28,7 +28,7 @@ class AbstractSolver(ABC):
     @abstractmethod
     def covariant(self, a0: np.ndarray, o: np.ndarray):
         """
-        This routine returns the covariant matrix of estiamted parameters.
+        This routine returns the covariant matrix of estimated parameters.
         :param a0: trial values of parameters which we would like to estimate
         :param o: a set of observations
         :return: covariant matrix Sigma.
