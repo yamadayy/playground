@@ -16,7 +16,7 @@ class LeastSquareFit:
     def __init__(self, m: AbstractModel, s: AbstractSolver):
         self.__model: AbstractModel = m
         self.__solver: AbstractSolver = s
-        self.__observations: np.ndarray = None
+        self.__observations: np.ndarray = np.empty(0)
 
     def dimension(self):
         """
@@ -48,13 +48,16 @@ class LeastSquareFit:
         """
         return self.__solver.covariant(a0, self.__observations)
 
-    def solve(self, a0: np.ndarray) -> np.ndarray:
+    def solve(self, a0: np.ndarray, threshold: float = 0.01,
+              max_iter: int = 10) -> np.ndarray:
         """
-        Single step of iteration.
-        :param a0:
-        :return:
+
+        :param a0: trial values of parameters which we would like to estimate
+        :param threshold: threshold of the residual where the iteration stops.
+        :param max_iter: maximum number of iteration
+        :return: corrected value of {a}.
         """
-        tmp = np.empty([len(a0)])
+        tmp = np.zeros(len(a0))
         cor = self.__solver.correction(a0, self.__observations)
         for i in range(len(a0)):
             tmp[i] = a0[i] + cor.get(i, 0)

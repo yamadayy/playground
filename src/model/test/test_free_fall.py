@@ -25,4 +25,4 @@ def test_free_fall():
     lsf: LeastSquareFit = LeastSquareFit(model, solver)
     for i in range(n):
         lsf.add_observation(obs[i])
-    print(lsf.solve(a))
+    lsf.solve(a)
