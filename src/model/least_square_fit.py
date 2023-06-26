@@ -59,8 +59,7 @@ class LeastSquareFit:
         """
         tmp = np.zeros(len(a0))
         cor = self.__solver.correction(a0, self.__observations)
-        for i in range(len(a0)):
-            tmp[i] = a0[i] + cor.get(i, 0)
+        tmp = a0 + cor
         return tmp
 
     def get_S(self, a0: np.ndarray) -> float:

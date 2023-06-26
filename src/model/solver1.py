@@ -11,21 +11,23 @@ class Solver1(AbstractSolver):
     inaccurate initial approximations, or both" by Heinrich Eichhorn and Warren
     G. Clay, Mon. Not. R. astr. Soc. (1974) 166, 425-432.
     """
+
     def __init__(self, m: AbstractModel):
         super().__init__(m)
 
     def correction(self, a0: np.ndarray, obs: np.ndarray):
         # TODO (under construction)
-        tmp = - np.lilnalg.inv(self._large_matrix(a0, obs))
-        g_list = []
+        large_matrix = self._large_matrix(a0, obs)
+        tmp = - np.linalg.inv(large_matrix)
+        g0 = np.empty(0)
         for i in range(len(obs)):
-            g_list = g_list.append(self._model.model(a0, obs[i].get_param()))
-        g0 = np.array(g_list)
-        h0 = self._model.constraint()
+            g0 = np.append(g0, self._model.model(a0, obs[i].get_params()))
         tmp_f = np.zeros(len(obs) + self._nc + self._np)
         _no = len(obs)
         tmp_f[0:_no] = g0[0:_no]
-        tmp_f[_no:_no + self._nc] = h0[0:self._nc]
+        if self._nc > 0:
+            h0 = self._model.constraint(a0)
+            tmp_f[_no:_no + self._nc] = h0[0:self._nc]
         ans = tmp.dot(tmp_f)
         return ans[_no + self._nc:_no + self._nc + self._np]
 
@@ -41,13 +43,14 @@ class Solver1(AbstractSolver):
         tmp = - np.lilnalg.inv(self._large_matrix(a0, obs))
         _no: int = len(obs)
         return tmp[_no + self._nc:_no + self._nc + self._np,
-               _no + self._nc:_no + self._nc + self._np]
+                   _no + self._nc:_no + self._nc + self._np]
 
     @staticmethod
     def _matrix_g_inverse(obs: np.ndarray):
         """
+        A matrix sigma is covariant matrix of observation.
         G = X sigma X^T, and the problem is formulated as a matrix X be unity.
-        A sigma is covariant matrix.
+        So, this routine returns sigma^(-1).
         :param obs: a set of observations
         :return: inverse of matrix G
         """
@@ -59,7 +62,7 @@ class Solver1(AbstractSolver):
     def _large_matrix(self, a0: np.ndarray, obs: np.ndarray) -> np.ndarray:
         """
         In the paper, the Least Square Problem is written in matrix form
-         |X sigma^T X 0   B | |Lambda_0|   |G_0|   |0|
+         |X sigma X^T 0   B | |Lambda_0|   |G_0|   |0|
          |     0      0   C | |Lambda_1| + |H_0| = |0|
          | B^T       C^T  0 | | Delta  |   | 0 |   |0|.
          This routine returns the coefficient matrix.
@@ -75,15 +78,16 @@ class Solver1(AbstractSolver):
         c: np.ndarray = self._model.c_matrix(a0)
         gd: np.ndarray = np.empty(0)
         for i in range(len(obs)):
-            gd.append(obs[i].get_sigma() * obs[i].get_sigma())
+            gd = np.append(gd, obs[i].get_sigma() * obs[i].get_sigma())
         g = np.diag(gd)
         tmp[0:_no, 0:_no] = g[0:_no, 0:_no]
-        tmp[0:_no, _no + self._nc:_no + self._nc + self._np]\
+        tmp[0:_no, _no + self._nc:_no + self._nc + self._np] \
             = b[0:_no, 0:self._np]
-        tmp[_no + self._nc:_no + self._nc + self._np, 0:_no]\
+        tmp[_no + self._nc:_no + self._nc + self._np, 0:_no] \
             = b[0:_no, 0:self._np].T
-        tmp[_no:_no + self._nc, _no + self._nc:_no + self._nc + self._np]\
-            = c[0:self._nc, 0:self._np]
-        tmp[_no + self._nc:_no + self._nc + self._np, _no:_no + self._nc]\
-            = c[0:self._nc, 0:self._np].T
+        if self._nc > 0:
+            tmp[_no:_no + self._nc, _no + self._nc:_no + self._nc + self._np] \
+                = c[0:self._nc, 0:self._np]
+            tmp[_no + self._nc:_no + self._nc + self._np, _no:_no + self._nc] \
+                = c[0:self._nc, 0:self._np].T
         return tmp

@@ -18,8 +18,8 @@ class FreeFallModel(AbstractModel):
     def b_matrix(self, a: np.ndarray, o: np.ndarray) -> np.ndarray:
         tmp = np.zeros((len(o), 3))
         for i in range(len(o)):
-            tmp[i][0] = o[i] * o[i]
-            tmp[i][1] = o[i]
+            tmp[i][0] = o[i].get_params()[0] * o[i].get_params()[0]
+            tmp[i][1] = o[i].get_params()[0]
             tmp[i][2] = 1.
         return tmp
 
