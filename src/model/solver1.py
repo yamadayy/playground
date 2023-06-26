@@ -18,17 +18,19 @@ class Solver1(AbstractSolver):
     def correction(self, a0: np.ndarray, obs: np.ndarray):
         # TODO (under construction)
         large_matrix = self._large_matrix(a0, obs)
-        tmp = - np.linalg.inv(large_matrix)
+        large_matrix_inverse = - np.linalg.inv(large_matrix)
         g0 = np.empty(0)
         for i in range(len(obs)):
             g0 = np.append(g0, self._model.model(a0, obs[i].get_params()))
         tmp_f = np.zeros(len(obs) + self._nc + self._np)
         _no = len(obs)
         tmp_f[0:_no] = g0[0:_no]
+        for i in range(_no):
+            tmp_f[i] = tmp_f[i] + obs[i].get_value()
         if self._nc > 0:
             h0 = self._model.constraint(a0)
             tmp_f[_no:_no + self._nc] = h0[0:self._nc]
-        ans = tmp.dot(tmp_f)
+        ans = large_matrix_inverse.dot(tmp_f)
         return ans[_no + self._nc:_no + self._nc + self._np]
 
     def covariant(self, a0: np.ndarray, obs: np.ndarray):
