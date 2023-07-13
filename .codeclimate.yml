@@ -12,7 +12,7 @@ plugins:
         enabled: false
       E128:
         enabled: false
-      max-line-length:
+      E501:
         enabled: true
         config:
           threshold: 120
