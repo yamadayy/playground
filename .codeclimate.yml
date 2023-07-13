@@ -12,6 +12,10 @@ plugins:
         enabled: false
       E128:
         enabled: false
+      max-line-length:
+        enabled: true
+        config:
+          threshold: 120
   radon:
     enabled: true
 exclude_patterns:
