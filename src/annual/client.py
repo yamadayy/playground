@@ -114,8 +114,6 @@ def set_full_model_parameters():
 
 
 if __name__ == '__main__':
-    # set_zero_noise_parameters()
-    # set_full_model_parameters()
     mean = []
     stdev = []
     for rep in range(1):

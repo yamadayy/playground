@@ -1,5 +1,6 @@
 from model.observation import Observation
 from model.solver1 import Solver1
+from itertools import product
 
 
 def test_g_inverse():
@@ -12,7 +13,6 @@ def test_g_inverse():
     assert g[0][0] == 1
     assert g[1][1] == 4
     assert g[2][2] == 16
-    for i in range(3):
-        for j in range(3):
-            if not i == j:
-                assert g[i][j] == 0
+    for i, j in product(range(3), range(3)):
+        if not i == j:
+            assert g[i][j] == 0
