@@ -1,0 +1,26 @@
+version: "2"
+plugins:
+  sonar-python:
+    enabled: true
+    checks:
+      python:S107:
+        enabled: false
+  pep8:
+    enabled: true
+    checks:
+      E221:
+        enabled: false
+      E128:
+        enabled: false
+  radon:
+    enabled: true
+exclude_patterns:
+  - "**/.*"
+  - "/LICENSE"
+  - "/README.md"
+  - "/setup.py"
+  - "/notebook/"
+  - "**/__init__.py"
+  - "**/*.yml"
+  - "**/*.txt"
+  - "**/*.md"
