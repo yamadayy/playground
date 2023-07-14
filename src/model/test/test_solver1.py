@@ -14,5 +14,4 @@ def test_g_inverse():
     assert g[1][1] == 4
     assert g[2][2] == 16
     for i, j in product(range(3), range(3)):
-        if not i == j:
-            assert g[i][j] == 0
+        assert g[i][j] == 0 or i == j
