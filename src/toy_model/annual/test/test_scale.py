@@ -1,6 +1,6 @@
 import math
 
-from annual.scale import Scale
+from toy_model.annual.scale import Scale
 
 
 def test_init():

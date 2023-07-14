@@ -1,5 +1,5 @@
-from visitor.visitor import ListVisitor
-from visitor.element import File, Directory, FileTreatmentException
+from toy_model.visitor.visitor import ListVisitor
+from toy_model.visitor.element import File, Directory, FileTreatmentException
 
 
 def start_main():

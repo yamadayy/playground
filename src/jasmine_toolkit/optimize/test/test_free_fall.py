@@ -1,11 +1,11 @@
 import numpy as np
 
-from model.abstract_model import AbstractModel
-from model.abstract_solver import AbstractSolver
+from jasmine_toolkit.optimize.abstract_model import AbstractModel
+from jasmine_toolkit.optimize.abstract_solver import AbstractSolver
 from model.free_fall_model import FreeFallModel
-from model.least_square_fit import LeastSquareFit
-from model.observation import Observation
-from model.solver1 import Solver1
+from jasmine_toolkit.optimize.least_square_fit import LeastSquareFit
+from jasmine_toolkit.optimize.observation import Observation
+from jasmine_toolkit.optimize.solver1 import Solver1
 
 
 def test_free_fall():

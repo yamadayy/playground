@@ -3,8 +3,8 @@ import random
 
 import numpy as np
 
-from annual.star import Star
-from annual.scale import Scale
+from toy_model.annual.star import Star
+from toy_model.annual.scale import Scale
 
 num_star = 50
 num_reference_star = 10

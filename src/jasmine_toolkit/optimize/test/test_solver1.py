@@ -1,5 +1,5 @@
-from model.observation import Observation
-from model.solver1 import Solver1
+from jasmine_toolkit.optimize.observation import Observation
+from jasmine_toolkit.optimize.solver1 import Solver1
 from itertools import product
 
 

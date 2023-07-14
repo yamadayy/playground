@@ -1,4 +1,4 @@
-from model.abstract_constraint import AbstractConstraint
+from jasmine_toolkit.optimize.abstract_constraint import AbstractConstraint
 import numpy as np
 
 

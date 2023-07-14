@@ -1,6 +1,6 @@
 import math
 
-from annual.star import Star
+from toy_model.annual.star import Star
 
 
 def test_star():

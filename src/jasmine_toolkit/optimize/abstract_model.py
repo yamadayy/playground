@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from model.no_constraint import NoConstraint
+from jasmine_toolkit.optimize.no_constraint import NoConstraint
 import numpy as np
 
 

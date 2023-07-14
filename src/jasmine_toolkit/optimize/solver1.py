@@ -1,7 +1,7 @@
 import numpy as np
 
-from model.abstract_model import AbstractModel
-from model.abstract_solver import AbstractSolver
+from jasmine_toolkit.optimize.abstract_model import AbstractModel
+from jasmine_toolkit.optimize.abstract_solver import AbstractSolver
 
 
 class Solver1(AbstractSolver):

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from model.abstract_model import AbstractModel
+from jasmine_toolkit.optimize.abstract_model import AbstractModel
 import numpy as np
 
 
