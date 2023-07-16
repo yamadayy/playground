@@ -35,11 +35,11 @@ def observe(stars):
     return obs
 
 
-def est_error(a0, a1, a2, observed, stars):
+def est_error(a, observed, stars):
     true_value = []
     for i in range(len(observed)):
-        true_value.append((math.sqrt(a1 * a1 - 4 * a2 * (a0 - observed[i]))
-                           - a1) / 2 / a2 - stars[i])
+        true_value.append((math.sqrt(a[1] * a[1] - 4 * a[2] * (a[0] - observed[i]))
+                           - a[1]) / 2 / a[2] - stars[i])
     return true_value
 
 
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         mat_a_normal = np.empty((m, 3))
         vec_f_normal = np.empty((m, 1))
         obs = observe(normal_stars)
-        pos_error = est_error(a_estimated, b_estimated, c_estimated, obs, normal_stars)
+        pos_error = est_error([a_estimated, b_estimated, c_estimated], obs, normal_stars)
         for i in range(k):
             stat[i][j] = pos_error[i]
     # print(stat)
