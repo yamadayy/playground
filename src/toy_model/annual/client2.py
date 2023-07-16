@@ -43,44 +43,45 @@ def est_error(a0, a1, a2, observed, stars):
     return true_value
 
 
-ll = 100
-a = 3
-b = 1.01
-c = 1E-4
-m = 5
-k = 5
-n = 5
-gaia_stars = generate_stars(m)
-normal_stars = generate_stars(k)
-print("Gaia stars  :" + str(gaia_stars))
-print("Normal stars:" + str(normal_stars))
-stat = np.empty((k, n))
-for j in range(n):
-    mat_a_gaia, vec_f_gaia = calculate_a_and_f(gaia_stars)
-    cova_param = np.linalg.inv(np.transpose(mat_a_gaia).dot(mat_a_gaia))
-    delta = cova_param.dot(np.transpose(mat_a_gaia).dot(vec_f_gaia))
-    a_estimated = - delta[0][0]
-    b_estimated = - delta[1][0]
-    c_estimated = - delta[2][0]
-    mat_a_normal = np.empty((m, 3))
-    vec_f_normal = np.empty((m, 1))
-    obs = observe(normal_stars)
-    pos_error = est_error(a_estimated, b_estimated, c_estimated, obs, normal_stars)
-    for i in range(k):
-        stat[i][j] = pos_error[i]
-# print(stat)
-print(str(np.average(stat[0])) + ", " + str(np.std(stat[0])))
-plt.hist(stat[0])
-plt.show()
-print(str(np.average(stat[1])) + ", " + str(np.std(stat[1])))
-plt.hist(stat[1])
-plt.show()
-print(str(np.average(stat[2])) + ", " + str(np.std(stat[2])))
-plt.hist(stat[2])
-plt.show()
-print(str(np.average(stat[3])) + ", " + str(np.std(stat[3])))
-plt.hist(stat[3])
-plt.show()
-print(str(np.average(stat[4])) + ", " + str(np.std(stat[4])))
-plt.hist(stat[4])
-plt.show()
+if __name__ == '__main__':
+    ll = 100
+    a = 3
+    b = 1.01
+    c = 1E-4
+    m = 5
+    k = 5
+    n = 5
+    gaia_stars = generate_stars(m)
+    normal_stars = generate_stars(k)
+    print("Gaia stars  :" + str(gaia_stars))
+    print("Normal stars:" + str(normal_stars))
+    stat = np.empty((k, n))
+    for j in range(n):
+        mat_a_gaia, vec_f_gaia = calculate_a_and_f(gaia_stars)
+        cova_param = np.linalg.inv(np.transpose(mat_a_gaia).dot(mat_a_gaia))
+        delta = cova_param.dot(np.transpose(mat_a_gaia).dot(vec_f_gaia))
+        a_estimated = - delta[0][0]
+        b_estimated = - delta[1][0]
+        c_estimated = - delta[2][0]
+        mat_a_normal = np.empty((m, 3))
+        vec_f_normal = np.empty((m, 1))
+        obs = observe(normal_stars)
+        pos_error = est_error(a_estimated, b_estimated, c_estimated, obs, normal_stars)
+        for i in range(k):
+            stat[i][j] = pos_error[i]
+    # print(stat)
+    print(str(np.average(stat[0])) + ", " + str(np.std(stat[0])))
+    plt.hist(stat[0])
+    plt.show()
+    print(str(np.average(stat[1])) + ", " + str(np.std(stat[1])))
+    plt.hist(stat[1])
+    plt.show()
+    print(str(np.average(stat[2])) + ", " + str(np.std(stat[2])))
+    plt.hist(stat[2])
+    plt.show()
+    print(str(np.average(stat[3])) + ", " + str(np.std(stat[3])))
+    plt.hist(stat[3])
+    plt.show()
+    print(str(np.average(stat[4])) + ", " + str(np.std(stat[4])))
+    plt.hist(stat[4])
+    plt.show()

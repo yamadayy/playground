@@ -8,14 +8,38 @@ from jasmine_toolkit.optimize.solver1 import Solver1
 
 
 class FreeFallModel(AbstractModel):
+    """ sample of ConcreteModel
+
+    For the example of the ConcreteModel, the problem to solve the gravitational acceleration
+    from the free fall experiments.
+
+    """
 
     def __init__(self):
         super().__init__(3)
 
     def model(self, a: np.ndarray, b: np.ndarray) -> np.ndarray:
+        """ The method model of free fall
+
+        The model denotes h = g t^2 + v_0 t + h_0. The parameter vector a = {g, v_0, h_0}
+        and the parameter vector b = {t}
+
+        :param a: trial value of the parameter vector a
+        :param b: time of observed h as a vector with one component.
+        :return: h
+        """
         return a[0] * b[0] * b[0] + a[1] * b[0] + a[2]
 
     def b_matrix(self, a: np.ndarray, o: np.ndarray) -> np.ndarray:
+        """ The matrix B
+
+        The matrix B of the Heinrich Eichhorn and Warren G. Clay, Mon. Not. R. astr.
+        Soc. (1974) 166, 425-432.
+
+        :param a: trial value of the parameter vector a
+        :param o: observations.
+        :return: matrix B.
+        """
         tmp = np.zeros((len(o), 3))
         for i in range(len(o)):
             tmp[i][0] = o[i].get_params()[0] * o[i].get_params()[0]
@@ -41,7 +65,10 @@ if __name__ == '__main__':
     lsf: LeastSquareFit = LeastSquareFit(model, solver)
     for i in range(n):
         lsf.add_observation(obs[i])
-    lsf.solve(a)
+    ans = np.array([1.0, 0.0, 0.])
+    for i in range(5):
+        ans = lsf.solve(np.array(ans))
+        print(ans)
     """
     model: AbstractModel = FreeFallModel()
     print('number of parameters:  ' + str(model.num_param()))
