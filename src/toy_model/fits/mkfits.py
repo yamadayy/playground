@@ -20,4 +20,3 @@ for s in range(n_stars):
             array[int(px), int(py)] += 1
 
 np.savetxt("tmp.csv", array, delimiter=',')
-

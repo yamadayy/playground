@@ -3,8 +3,8 @@ import random
 
 import numpy as np
 
-from annual.star import Star
-from annual.scale import Scale
+from toy_model.annual.star import Star
+from toy_model.annual.scale import Scale
 
 num_star = 50
 num_reference_star = 10
@@ -114,8 +114,6 @@ def set_full_model_parameters():
 
 
 if __name__ == '__main__':
-    # set_zero_noise_parameters()
-    # set_full_model_parameters()
     mean = []
     stdev = []
     for rep in range(1):

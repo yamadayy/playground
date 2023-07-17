@@ -1,9 +1,11 @@
 from abc import ABCMeta, abstractmethod
 
+
 class Element(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, v):
         pass
+
 
 class Entry(Element):
     @abstractmethod

@@ -1,8 +1,8 @@
-from visitor.visitor import ListVisitor
-from visitor.element import File, Directory, FileTreatmentException
+from toy_model.visitor.visitor import ListVisitor
+from toy_model.visitor.element import File, Directory, FileTreatmentException
 
 
-def startMain():
+def start_main():
     try:
         print("makikng root entries")
         rootdir = Directory("root")
@@ -43,5 +43,6 @@ def startMain():
     except FileTreatmentException as ex:
         print(ex.message)
 
+
 if __name__ == '__main__':
-    startMain()
+    start_main()

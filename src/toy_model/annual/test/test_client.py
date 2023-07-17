@@ -1,9 +1,9 @@
 import math
 import random
-from annual.client import make_stars, make_scales, make_reference_stars,\
+from toy_model.annual.client import make_stars, make_scales, make_reference_stars,\
     estimate_parallax
-from annual.scale import Scale
-from annual.star import Star
+from toy_model.annual.scale import Scale
+from toy_model.annual.star import Star
 
 
 def test_stars(monkeypatch):
