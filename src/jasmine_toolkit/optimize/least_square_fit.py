@@ -59,6 +59,7 @@ class LeastSquareFit:
         """
         tmp = np.zeros(len(a0))
         cor = self.__solver.correction(a0, self.__observations)
+        print(cor)
         tmp = a0 + cor
         return tmp
 

@@ -65,7 +65,7 @@ if __name__ == '__main__':
     lsf: LeastSquareFit = LeastSquareFit(model, solver)
     for i in range(n):
         lsf.add_observation(obs[i])
-    ans = np.array([1.0, 0.0, 0.])
+    ans = np.array([0.0, 0.0, 0.])
     for i in range(5):
         ans = lsf.solve(np.array(ans))
         print(ans)

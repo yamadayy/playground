@@ -16,6 +16,7 @@ class Solver1(AbstractSolver):
         super().__init__(m)
 
     def correction(self, a0: np.ndarray, obs: np.ndarray):
+
         # TODO (under construction)
         large_matrix = self._large_matrix(a0, obs)
         large_matrix_inverse = - np.linalg.inv(large_matrix)
@@ -26,7 +27,7 @@ class Solver1(AbstractSolver):
         _no = len(obs)
         tmp_f[0:_no] = g0[0:_no]
         for i in range(_no):
-            tmp_f[i] = tmp_f[i] + obs[i].get_value()
+            tmp_f[i] = tmp_f[i] - obs[i].get_value()
         if self._nc > 0:
             h0 = self._model.constraint(a0)
             tmp_f[_no:_no + self._nc] = h0[0:self._nc]
