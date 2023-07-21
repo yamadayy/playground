@@ -39,6 +39,7 @@ def test_galactic_to_ecliptic():
     assert math.isclose(c.pm_lon_coslat.value, -0.3668, abs_tol=1.0e-3)
     assert math.isclose(c.parallax.value, 1.0, abs_tol=1.0e-3)
 
+
 def test_ecliptic_to_eplictic_without_pm():
     coord = SkyCoord(0.0 * u.deg, 0.0 * u.deg, frame='barycentricmeanecliptic')
     c = CatalogueEntry(1, coord, 12.5, Time('2022-01-01T00:00:00'))
