@@ -55,10 +55,6 @@ class Parameters:
             if name.startswith("__"):
                 continue
             self.__constants[name] = getattr(const, name)
-        # filename = pkg_resources.resource_filename(
-        #     'jasmine_toolkit', 'utils/constants/constants.yaml')
-        # self.__load_file(filename, True)
-        # print(self.__constants)
         self.__is_dirty = True
         Parameters.__instance = self
 
@@ -135,10 +131,7 @@ class Parameters:
         except ValueError:
             pass
         try:
-            # print(val)
             v = eval(val)
-            # print(v)
-            # print(type(v))
             return v
         except BaseException as e:
             # print(e)
