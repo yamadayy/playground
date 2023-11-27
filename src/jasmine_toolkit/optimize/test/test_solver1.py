@@ -1,14 +1,11 @@
 import math
 
-import pytest
-
 from jasmine_toolkit.optimize.abstract_model import AbstractModel
-from jasmine_toolkit.optimize.abstract_solver import AbstractSolver
 from jasmine_toolkit.optimize.observation import Observation
 from jasmine_toolkit.optimize.solver1 import Solver1
 from itertools import product
 
-from model.free_fall_model import FreeFallModel
+from jasmine_toolkit.datamodel.toy.free_fall_model import FreeFallModel
 import numpy as np
 
 
