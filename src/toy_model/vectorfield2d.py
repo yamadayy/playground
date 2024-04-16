@@ -50,11 +50,11 @@ class VectorField2d:
         _scale = _max / self.grid_width
         _arrow = _arrow_scale / _scale / 3600
         if _arrow_scale < 1e-3:
-            arrow_string = str(_arrow_scale * 1e6) + "uas"
+            arrow_string = "{:.1f}".format(_arrow_scale * 1e6) + "uas"
         elif _arrow_scale < 1:
-            arrow_string = str(_arrow_scale * 1e3) + "mas"
+            arrow_string = "{:.1f}".format(_arrow_scale * 1e3) + "mas"
         else:
-            arrow_string = str(_arrow_scale) + "as"
+            arrow_string = "{:.1f}".format(_arrow_scale) + "as"
         self.draw_limits(_plt)
         _plt.arrow(x=0, y=-self.LY, dx=_arrow, dy=0, head_width=0.25 * _arrow, length_includes_head=True)
         _plt.text(_arrow, -self.LY, arrow_string)
@@ -179,7 +179,7 @@ class RelativisticAberration:
                      + "°)" + " phase=" + "{:.0f}".format(np.rad2deg(self.phase)) + "°" + ":snapshot")
         return fig
 
-    def figure2(self, vector_field):
+    def figure3(self, vector_field):
         fig = self._figure_title()
         fig1 = fig.add_subplot(1, 2, 1, projection=ccrs.PlateCarree())
         fig2 = fig.add_subplot(1, 2, 2, projection=ccrs.PlateCarree())
@@ -189,10 +189,10 @@ class RelativisticAberration:
         vector_field.draw(u0, v0, fig1, "aberration field", 15)
         vector_field.draw(u0 - np.average(u0), v0 - np.average(v0), fig2, "difference from mean", 0.1)
         plt.draw()
-        plt.savefig('fig2.png')
+        plt.savefig('fig3.png')
         plt.show()
 
-    def figure2d(self, vector_field):
+    def figure9_left_down(self, vector_field):
         fig = self._figure_title()
         fig1 = fig.add_subplot(2, 2, 1, projection=ccrs.PlateCarree())
         fig2 = fig.add_subplot(2, 2, 2, projection=ccrs.PlateCarree())
@@ -220,10 +220,10 @@ class RelativisticAberration:
         u1, v1 = calc_distortion_in_degree(v_with_dv, vector_field)
         vector_field.draw(u1 - u0, v1 - v0, fig4, "d|v|=" + str(dv) + "m/s", 2e-5)  # error of speed
         plt.draw()
-        plt.savefig('fig2d.png')
+        plt.savefig('fig9ld.png')
         plt.show()
 
-    def figure4(self, vector_field):
+    def figure7(self, vector_field):
         fig = self._figure_title()
         fig1 = fig.add_subplot(1, 2, 1, projection=ccrs.PlateCarree())
         fig2 = fig.add_subplot(1, 2, 2, projection=ccrs.PlateCarree())
@@ -249,7 +249,7 @@ class RelativisticAberration:
         vector_field.draw(u1 - u0 - np.average(u1) + np.average(u0), v1 - v0 - np.average(v1) + np.average(v0), fig2,
                           "d|v|=" + str(dv) + "m/s", 2e-5)  # error of speed
         plt.draw()
-        plt.savefig('fig4.png')
+        plt.savefig('fig7.png')
         plt.show()
 
     def figure5(self, vector_field):
@@ -284,12 +284,10 @@ class RelativisticAberration:
         plt.savefig('fig5.png')
         plt.show()
 
-    def figure6(self, vector_field):
+    def figure10(self, vector_field):
         fig = self._figure_title()
         fig1 = fig.add_subplot(2, 2, 1, projection=ccrs.PlateCarree())
         fig2 = fig.add_subplot(2, 2, 2, projection=ccrs.PlateCarree())
-        # fig3 = fig.add_subplot(3, 2, 3, projection=ccrs.PlateCarree())
-        # fig4 = fig.add_subplot(3, 2, 4, projection=ccrs.PlateCarree())
         fig5 = fig.add_subplot(2, 2, 3, projection=ccrs.PlateCarree())
         fig6 = fig.add_subplot(2, 2, 4, projection=ccrs.PlateCarree())
         t0 = self.obs_date
@@ -314,9 +312,9 @@ class RelativisticAberration:
         ue, ve = calc_distortion_in_degree(self.satellite_velocity, vector_field)
         vector_field.draw((ue + us) * 0.5 - um - np.average((ue + us) * 0.5 - um),
             (ve + vs) * 0.5 - vm - np.average((ve + vs) * 0.5 - vm), fig6, "<u> - u(tm). 120sec", 2e-5)
-        # plt.draw()
-        # plt.savefig('fig6.png')
-        # plt.show()
+        plt.draw()
+        plt.savefig('fig10.png')
+        plt.show()
 
 
 def global_map(x0, y0, _v0):
@@ -341,14 +339,14 @@ def global_map(x0, y0, _v0):
     plt.show()
 
 
-# global_map(0, 0, 0.0001)
+global_map(0, 0, 0.0001)
 
 a = VectorField2d(0.3, 0.3, 0.1)
 tz = astropy.time.TimezoneInfo(0 * u.hour)
-r = RelativisticAberration(datetime(2024, 11, 3, 12, 0, 0, tzinfo=tz), np.deg2rad(i * 10))
-r.figure2(a)
-r.figure2d(a)
+r = RelativisticAberration(datetime(2024, 2, 1, 12, 0, 0, tzinfo=tz), np.deg2rad(120))
+r.figure3(a)
+r.figure9_left_down(a)
 r.figure5(a)
-r.figure6(a)
+r.figure10(a)
 r = RelativisticAberration(datetime(2024, 3, 17, 12, 0, 0, tzinfo=tz), np.deg2rad(110))
-r.figure4(a)
+r.figure7(a)
