@@ -51,7 +51,7 @@ class Satellite:
             if 45 <= math.acos(inner_product) * 180 / math.pi <= 135:
                 break
             self._obs_date = self._obs_date + dt
-        print(self._obs_date)
+        # print(self._obs_date)
 
     def _revolution_velocity(self):
         """
