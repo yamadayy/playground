@@ -8,6 +8,16 @@ import cartopy.crs as ccrs
 from datetime import timedelta
 
 
+def subtract_trend(_u, _x):
+    u_0 = _u[0, 0]
+    u_1 = _u[-1, -1]
+    x0 = _x[0, 0]
+    x1 = _x[-1, -1]
+    _a = (u_1 - u_0) / (x1 - x0)
+    _b = (u_0 * x1 - u_1 * x0) / (x1 - x0)
+    return _u - _a * _x - _b
+
+
 class RelativisticAberration:
     def __init__(self, _sat: Satellite):
         """
@@ -60,9 +70,29 @@ class RelativisticAberration:
         fig2 = fig.add_subplot(1, 2, 2, projection=ccrs.PlateCarree())
         u0, v0 = self.calc_distortion_in_degree(vector_field)
         vector_field.draw(u0, v0, fig1, "aberration field", 15)
-        vector_field.draw(u0 - np.average(u0), v0 - np.average(v0), fig2, "difference from mean", 0.1)
+        u1 = u0 - np.average(u0)
+        v1 = v0 - np.average(v0)
+        vector_field.draw(u1, v1, fig2, "difference from mean", 0.1)
         plt.draw()
         plt.savefig('fig3.png')
+        plt.show()
+
+    def figure_3a(self, vector_field, file_name):
+        fig = self._figure_title()
+        fig1 = fig.add_subplot(1, 3, 1, projection=ccrs.PlateCarree())
+        fig2 = fig.add_subplot(1, 3, 2, projection=ccrs.PlateCarree())
+        fig3 = fig.add_subplot(1, 3, 3, projection=ccrs.PlateCarree())
+        u0, v0 = self.calc_distortion_in_degree(vector_field)
+        vector_field.draw(u0, v0, fig1, "aberration field", 15)
+        u1 = u0 - np.average(u0)
+        v1 = v0 - np.average(v0)
+        vector_field.draw(u1, v1, fig2, "difference from mean", 0.1)
+        X, Y = vector_field.get_grid()
+        u2 = subtract_trend(u1, X)
+        v2 = subtract_trend(v1, Y)
+        vector_field.draw(u2, v2, fig3, "subtract trend", 0.0003)
+        plt.draw()
+        plt.savefig(file_name)
         plt.show()
 
     def figure9_left_down(self, vector_field):
