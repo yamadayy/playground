@@ -1,4 +1,4 @@
-from toy_model.myclass import MyClass
+from example.myclass import MyClass
 
 if __name__ == '__main__':
     a = MyClass()
