@@ -54,4 +54,9 @@ def print_observable_orbit(year: int):
 
 
 if __name__ == '__main__':
-    print_observable_orbit(2035)
+    c = SkyCoord(0, 90, unit="deg", frame="galactic")
+    cg = c.barycentricmeanecliptic
+    print(str(cg.lon.deg) + "," + str(cg.lat.deg))
+    c = SkyCoord(266.84, 24.46, unit="deg", frame="barycentricmeanecliptic")
+    cg = c.galactic
+    print(str(cg.l.deg) + "," + str(cg.b.deg))
