@@ -1,5 +1,5 @@
 import itertools
-from datetime import datetime
+from datetime import datetime, timedelta
 import astropy.time
 import astropy.constants
 import cartopy.crs as ccrs
@@ -94,7 +94,24 @@ def sub_trend():
     r.figure_3a(a, "fig3a3.png")
 
 
+def change_during_exposure():
+    a = VectorField2d(0.3, 0.3, 0.1)
+    tz = astropy.time.TimezoneInfo(0 * u.hour)
+    r = RelativisticAberration(Satellite(datetime(2024, 2, 1, 12, 0, 0, tzinfo=tz), np.deg2rad(120)))
+    r.figure11(a)
+
+
+def trend(_u, _x):
+    u_0 = _u[0, 0]
+    u_1 = _u[-1, -1]
+    x0 = _x[0, 0]
+    x1 = _x[-1, -1]
+    _a = (u_1 - u_0) / (x1 - x0)
+    _b = (u_0 * x1 - u_1 * x0) / (x1 - x0)
+    return _a * _x + _b
+
 # global_map(0, 0, 0.0001)
 # aberration_statistics(0.01)
 # normal_figures()
 # sub_trend()
+# change_during_exposure()

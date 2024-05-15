@@ -180,3 +180,17 @@ class RelativisticAberration:
         plt.draw()
         plt.savefig('fig10.png')
         plt.show()
+
+    def figure11(self, vector_field):
+        fig = self._figure_title()
+        ax1 = fig.add_subplot(1, 2, 1, projection=ccrs.PlateCarree())
+        ax2 = fig.add_subplot(1, 2, 2, projection=ccrs.PlateCarree())
+        t0 = self.satellite.obs_date
+        dt = timedelta(seconds=6.25)
+        us, vs = self.calc_distortion_in_degree(vector_field, _obs_time=t0 - dt)
+        ue, ve = self.calc_distortion_in_degree(vector_field, _obs_time=t0 + dt)
+        vector_field.draw(ue - us, ve - vs, ax1, "u(t2) - u(t1)", 5e-2)
+        vector_field.draw(ue - us - np.average(ue - us), ve - vs - np.average(ve - vs), ax2, "subtract mean", 3e-4)
+        plt.draw()
+        plt.savefig('fig11.png')
+        plt.show()
