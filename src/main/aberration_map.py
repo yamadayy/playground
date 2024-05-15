@@ -1,5 +1,4 @@
-import itertools
-from datetime import datetime, timedelta
+from datetime import datetime
 import astropy.time
 import astropy.constants
 import cartopy.crs as ccrs
