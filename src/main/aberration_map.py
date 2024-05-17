@@ -91,6 +91,12 @@ def sub_trend():
     r.figure_3a(a, "fig3a2.png")
     r = RelativisticAberration(Satellite(datetime(2024, 5, 1, 12, 0, 0, tzinfo=tz), np.deg2rad(120)))
     r.figure_3a(a, "fig3a3.png")
+    r = RelativisticAberration(Satellite(datetime(2024, 8, 1, 12, 0, 0, tzinfo=tz), np.deg2rad(120)))
+    r.figure_3a(a, "fig3a4.png")
+    r = RelativisticAberration(Satellite(datetime(2024, 9, 20, 12, 0, 0, tzinfo=tz), np.deg2rad(120)))
+    r.figure_3a(a, "fig3a5.png")
+    r = RelativisticAberration(Satellite(datetime(2024, 11, 1, 12, 0, 0, tzinfo=tz), np.deg2rad(120)))
+    r.figure_3a(a, "fig3a6.png")
 
 
 def change_during_exposure():
