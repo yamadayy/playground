@@ -25,6 +25,7 @@ def base_map():
     # _x = 10 * np.arange(36 + 1) - 180.0
     # _y = 90. - 10 * np.arange(18 + 1)
     # _X, _Y = np.meshgrid(_x, _y)
+    _fig1.invert_xaxis()
     return _fig1
 
 

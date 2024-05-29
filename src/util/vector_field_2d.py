@@ -40,7 +40,8 @@ class VectorField2d:
 
     def draw(self, _u, _v, _plt, _title_string, _arrow_scale):
         _max = max(np.max(_u), -np.min(_u), np.max(_v), -np.min(_v))
-        print(str(_max * 3600), end=',')
+        print("max={}".format((_max * 3600)), end=',')
+        print("(u,v)=({},{})".format(_u[6,6], _v[6,6]))
         _scale = _max / self.grid_width
         _arrow = _arrow_scale / _scale / 3600
         if _arrow_scale < 1e-3:

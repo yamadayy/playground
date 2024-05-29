@@ -11,11 +11,61 @@ from datetime import timedelta
 def subtract_trend(_u, _x):
     u_0 = _u[0, 0]
     u_1 = _u[-1, -1]
+    u_c = _u[int(_u.shape[0]/2), int(_u.shape[1]/2)]
+    # print(_u.shape)
     x0 = _x[0, 0]
+    xc = _x[int(_u.shape[0]/2), int(_u.shape[1]/2)]
     x1 = _x[-1, -1]
+    # print("U={}, {}, {}, X={}, {}, {}".format(u_0, u_c, u_1, x0, xc, x1))
+    # for i in range(7):
+    #    print("{},{}".format(_x[i, i], _u[i,i]))
     _a = (u_1 - u_0) / (x1 - x0)
     _b = (u_0 * x1 - u_1 * x0) / (x1 - x0)
-    return _u - _a * _x - _b
+    return _u - _a * (_x - xc) - u_c
+
+
+def subtract_trend_b(_u, _v, _x, _y):
+    u_0 = _u[0, 0]
+    u_1 = _u[-1, -1]
+    u_c = _u[int(_u.shape[0]/2), int(_u.shape[1]/2)]
+    v_0 = _v[0, 0]
+    v_1 = _v[-1, -1]
+    v_c = _v[int(_u.shape[0]/2), int(_u.shape[1]/2)]
+    x0 = _x[0, 0]
+    xc = _x[int(_u.shape[0]/2), int(_u.shape[1]/2)]
+    x1 = _x[-1, -1]
+    y0 = _y[0, 0]
+    yc = _y[int(_u.shape[0]/2), int(_u.shape[1]/2)]
+    y1 = _y[-1, -1]
+    _ax = (u_1 - u_0) / (x1 - x0)
+    _bx = (u_0 * x1 - u_1 * x0) / (x1 - x0)
+    _ay = (v_1 - v_0) / (y1 - y0)
+    _by = (v_0 * y1 - v_1 * y0) / (y1 - y0)
+    _a = (_ax + _ay) * 0.5
+    _b = (_bx + _by) * 0.5
+    # print("x:{},{} / y:{},{}".format(_ax,_bx, _ay, _by))
+    return _u - _a * (_x - xc) - u_c, _v - _a * (_y - yc) - v_c
+
+
+def subtract_trend_c(_u, _v, _x, _y):
+    # print(np.shape(_u))
+    tot = 0
+    n = 0
+    for i in range(np.shape(_u)[0]):
+        for j in range(np.shape(_u)[1]):
+            x0 = _x[i, j]
+            y0 = _y[i, j]
+            u0 = _u[i, j]
+            v0 = _v[i, j]
+            r0 = x0 * x0 + y0 * y0
+            if not (i == 3 and j == 3):
+                tot = tot + (x0 * u0 + y0 * v0) / r0
+                n = n + 1
+    ave = tot / n
+    # print("tot={}, n={}, ave={}".format(tot, n, ave))
+    u2 = _u - ave * _x
+    v2 = _v - ave * _y
+    return u2, v2
 
 
 class RelativisticAberration:
@@ -45,7 +95,7 @@ class RelativisticAberration:
         c = vector_to_sky_coord(v_unity)
         _x0 = c.galactic.l.rad
         _y0 = c.galactic.b.rad
-        print(str(np.rad2deg(_x0)) + "," + str(np.rad2deg(_y0)), end=",")
+        print("l={},b={}".format(np.rad2deg(_x0), np.rad2deg(_y0)), end=",")
         _v0 = np.linalg.norm(_v) / astropy.constants.c.value
         _x, _y = _vector_field.get_grid()
         len_cos = np.sin(np.deg2rad(_y)) * np.sin(_y0) + np.cos(np.deg2rad(_y)) * np.cos(_y0) * np.cos(
@@ -90,7 +140,25 @@ class RelativisticAberration:
         X, Y = vector_field.get_grid()
         u2 = subtract_trend(u0, X)
         v2 = subtract_trend(v0, Y)
-        vector_field.draw(u2, v2, fig3, "subtract trend", 0.0003)
+        # u2, v2 = subtract_trend_b(u0, v0, X, Y)
+        vector_field.draw(u2, v2, fig3, "subtract trend", 0.0005)
+        plt.draw()
+        plt.savefig(file_name)
+        plt.show()
+
+    def figure_3b(self, vector_field, file_name):
+        fig = self._figure_title()
+        fig1 = fig.add_subplot(1, 3, 1, projection=ccrs.PlateCarree())
+        fig2 = fig.add_subplot(1, 3, 2, projection=ccrs.PlateCarree())
+        fig3 = fig.add_subplot(1, 3, 3, projection=ccrs.PlateCarree())
+        u0, v0 = self.calc_distortion_in_degree(vector_field)
+        vector_field.draw(u0, v0, fig1, "aberration field", 15)
+        u1 = u0 - np.average(u0)
+        v1 = v0 - np.average(v0)
+        vector_field.draw(u1, v1, fig2, "difference from mean", 0.1)
+        X, Y = vector_field.get_grid()
+        u2, v2 = subtract_trend_c(u1, v1, X, Y)
+        vector_field.draw(u2, v2, fig3, "subtract trend", 0.007)
         plt.draw()
         plt.savefig(file_name)
         plt.show()
