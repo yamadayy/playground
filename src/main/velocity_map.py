@@ -17,6 +17,25 @@ def observation_region():
     return coord_ecliptic
 
 
+def galactic_coordinate(ax):
+    coord_galactic_b = np.array([[0.0, 0.0], [0.0, 0.8]])
+    coord_galactic_l = np.array([[0.0, 0.0], [0.8, 0.0]])
+    coord_ecliptic_b = np.empty(coord_galactic_b.shape)
+    coord_ecliptic_l = np.empty(coord_galactic_l.shape)
+    for _i in range(coord_galactic_l.shape[0]):
+        c0 = SkyCoord(coord_galactic_l[_i][0], coord_galactic_l[_i][1], unit="deg", frame="galactic")
+        coord_ecliptic_l[_i] = [c0.barycentricmeanecliptic.lon.deg, c0.barycentricmeanecliptic.lat.deg]
+    for _i in range(coord_galactic_b.shape[0]):
+        c0 = SkyCoord(coord_galactic_b[_i][0], coord_galactic_b[_i][1], unit="deg", frame="galactic")
+        coord_ecliptic_b[_i] = [c0.barycentricmeanecliptic.lon.deg, c0.barycentricmeanecliptic.lat.deg]
+    x = (coord_ecliptic_l[0][0], coord_ecliptic_l[1][0])
+    y = (coord_ecliptic_l[0][1], coord_ecliptic_l[1][1])
+    ax.plot(x, y, color="red", transform=ccrs.PlateCarree())
+    x = (coord_ecliptic_b[0][0], coord_ecliptic_b[1][0])
+    y = (coord_ecliptic_b[0][1], coord_ecliptic_b[1][1])
+    ax.plot(x, y, color="red", transform=ccrs.PlateCarree())
+
+
 def base_map():
     _fig = plt.figure()
     _fig1 = _fig.add_subplot(1, 1, 1, projection=ccrs.Mollweide())
@@ -48,6 +67,7 @@ def velocity_plot(_ax, _t_start):
 fig1 = base_map()
 ce = observation_region()
 fig1.plot(ce[:, 0], ce[:, 1], color="green", transform=ccrs.PlateCarree())
+galactic_coordinate(fig1)
 t_start = [datetime(2024, 2, 1, 12, 0, 0, tzinfo=astropy.time.TimezoneInfo(0 * u.hour)),
            datetime(2024, 3, 20, 12, 0, 0, tzinfo=astropy.time.TimezoneInfo(0 * u.hour)),
            datetime(2024, 5, 1, 12, 0, 0, tzinfo=astropy.time.TimezoneInfo(0 * u.hour)),

@@ -10,7 +10,7 @@ from jasmine_toolkit.optimize.solver1 import Solver1
 class FreeFallModel(AbstractModel):
     """ sample of ConcreteModel
 
-    For the example of the ConcreteModel, the problem to solve the gravitational acceleration
+    For the xample of the ConcreteModel, the problem to solve the gravitational acceleration
     from the free fall experiments.
 
     """

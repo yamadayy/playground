@@ -1,4 +1,4 @@
-from example.myclass import MyClass
+from xample.myclass import MyClass
 
 if __name__ == '__main__':
     a = MyClass()

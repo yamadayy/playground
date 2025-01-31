@@ -148,8 +148,10 @@ if __name__ == '__main__':
     normal = Normal2d(0.6, _nx, _ny, _aspect=1)
     data = generate_data(_n_sample, normal)  # shape = (_n_sample, _n_pix), 100 sample, 54000 photon->0.7 sec
 
-    mode = 3
-    if mode == 1:
+    mode = 4
+    if mode == 4:
+        print("Hello")
+    elif mode == 1:
         # 最適なkの違い
         print("one image: npix={}, k={}".format(_npix, calc_k(np.abs(data[0]).sum(), _npix)))
         x = 0

@@ -136,6 +136,6 @@ def trend(_u, _x):
 
 # global_map(0, 0, 0.0001)
 # aberration_statistics(0.01)
-# normal_figures()
-sub_trend()
+normal_figures()
+# sub_trend()
 # change_during_exposure()
