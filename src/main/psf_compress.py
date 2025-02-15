@@ -1,9 +1,43 @@
 import math
 import random
-from datetime import datetime
-
 import numpy as np
 from matplotlib import pyplot as plt
+
+
+class StellarImage:
+    def __init__(self, _nx, _ny):
+        self._nx = _nx
+        self._ny = _ny
+        self.image = None
+
+    def encode(self, image, base):
+        self.image = image
+        return 1
+
+    def decode(self, stream, base):
+        self.image = np.zeros((2 * _nx + 1) * (2 * _ny + 1))
+        return 0
+
+
+class StellarImageCollection:
+    def __init__(self):
+        self._data = None
+
+    def generate_data(self, _n_sample):
+        return None
+
+    def pca(self):
+        None
+
+
+class GaussImageCollection(StellarImageCollection):
+    def __init__(self):
+        None
+
+
+class ImageDataCollection(StellarImageCollection):
+    def __init__(self):
+        None
 
 
 class Normal2d:
@@ -145,13 +179,20 @@ if __name__ == '__main__':
     _nx = 4
     _ny = 4
     _npix = (2 * _nx + 1) * (2 * _ny + 1)
+    data = [1,2,3,4,5,6,7,8]
+    x = np.abs(data).sum()
+    n_data = len(data)
+    k = calc_k(x, n_data)
+
+"""
     normal = Normal2d(0.6, _nx, _ny, _aspect=1)
     data = generate_data(_n_sample, normal)  # shape = (_n_sample, _n_pix), 100 sample, 54000 photon->0.7 sec
+    show_principle_component(5, 5)
+
+    # print(data[1])
 
     mode = 4
-    if mode == 4:
-        print("Hello")
-    elif mode == 1:
+    if mode == 1:
         # 最適なkの違い
         print("one image: npix={}, k={}".format(_npix, calc_k(np.abs(data[0]).sum(), _npix)))
         x = 0
@@ -195,3 +236,4 @@ if __name__ == '__main__':
     # nはTの展開次数、kはデータの番号、iはc[i]T[i]のi、jはn + 45の数字
 
     # show_principle_component(2, 4)
+"""
